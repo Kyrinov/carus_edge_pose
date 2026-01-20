@@ -1,0 +1,36 @@
+services:
+  mediapipe-pose:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mediapipe-pose:latest
+    container_name: mediapipe-pose
+    runtime: nvidia
+    environment:
+      - DISPLAY=${DISPLAY:-:0}
+      - QT_X11_NO_MITSHM=1
+    volumes:
+      # X11 socket for GUI display
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      # Argus daemon socket for CSI camera
+      - /tmp/argus_socket:/tmp/argus_socket
+      # Share application files for development
+      - ./mediapipe_pose.py:/app/mediapipe_pose.py
+      - ./mediapipe_pose_gstreamer.py:/app/mediapipe_pose_gstreamer.py
+      - ./mediapipe_pose_data.py:/app/mediapipe_pose_data.py
+    devices:
+      # USB cameras (V4L2)
+      - /dev/video0:/dev/video0
+      # CSI camera access
+      - /dev/nvhost-ctrl:/dev/nvhost-ctrl
+      - /dev/nvhost-ctrl-gpu:/dev/nvhost-ctrl-gpu
+      - /dev/nvhost-prof-gpu:/dev/nvhost-prof-gpu
+      - /dev/nvmap:/dev/nvmap
+      - /dev/nvhost-gpu:/dev/nvhost-gpu
+      - /dev/nvhost-as-gpu:/dev/nvhost-as-gpu
+      - /dev/nvhost-vic:/dev/nvhost-vic
+      - /dev/nvhost-nvdec:/dev/nvhost-nvdec
+    privileged: true
+    network_mode: host
+    stdin_open: true
+    tty: true

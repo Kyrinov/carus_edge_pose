@@ -1,0 +1,31 @@
+MediaPipe Pose Estimation Docker Container for Jetson
+
+To build and run:
+
+  # Allow X11 display access from container
+  xhost +local:docker
+
+  # Build the container
+  docker compose build
+
+  # Run with the default script (mediapipe_pose.py - USB camera)
+  docker compose up
+
+  # Or run a specific script
+  docker compose run mediapipe-pose python3 mediapipe_pose_gstreamer.py   # CSI camera
+  docker compose run mediapipe-pose python3 mediapipe_pose_data.py        # CSI + data extraction
+
+Available scripts:
+  - mediapipe_pose.py: Basic pose detection with USB camera (V4L2)
+  - mediapipe_pose_gstreamer.py: Pose detection with CSI camera via GStreamer
+  - mediapipe_pose_data.py: Pose detection with landmark data extraction
+
+Key features:
+  - NVIDIA runtime enabled for GPU acceleration
+  - Camera devices mounted (/dev/video0 for USB, plus CSI camera nodes)
+  - X11 socket shared for GUI display
+  - Python files mounted as volumes for easy development (changes reflect
+    without rebuild)
+  - Privileged mode and host network for full hardware access
+
+Base image: nvcr.io/nvidia/l4t-base:r36.2.0 (Ubuntu 22.04, JetPack 6.x)        

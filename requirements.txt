@@ -1,0 +1,12 @@
+# MediaPipe Pose Estimation Dependencies for Jetson
+
+# MediaPipe - pose detection framework
+# Note: On Jetson ARM64, mediapipe may need to be installed from a wheel or built from source
+# Try pip install first; if it fails, see: https://github.com/google/mediapipe
+mediapipe>=0.10.0
+
+# NumPy - numerical operations
+numpy>=1.21.0
+
+# Protobuf - required by mediapipe
+protobuf>=3.20.0,<4.0.0
